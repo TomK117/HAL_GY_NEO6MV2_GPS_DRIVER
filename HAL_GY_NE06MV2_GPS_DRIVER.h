@@ -9,8 +9,11 @@
 #define INC_HAL_GY_NE06MV2_GPS_DRIVER_H_
 
 #include "main.h"
+#include "string.h"
 
-extern uint8_t RX_Buffer[82];
+#define TRAME_SIZE 82	//GSP is 82 caratere maximum
+
+extern uint8_t RX_Buffer[1500];
 
 typedef struct {
 	uint8_t time [6];
@@ -21,8 +24,8 @@ typedef struct {
 	uint8_t HDO [3];
 	uint8_t MSL_RAW [6];
 	uint8_t MSL [6];
-	uint8_t empty;
-	uint8_t empty;
+	uint8_t empty0;
+	uint8_t empty1;
 	uint8_t checksum;
 }GPGGA;
 
@@ -71,5 +74,13 @@ typedef struct {
 	uint8_t cap_R [7];
 	uint8_t checksum;
 }GPRMC;
+
+void pull_GSP_GPGGA_data(UART_HandleTypeDef handle,uint8_t *buffer,GPGGA *data);
+void pull_GSP_GPGLL_data(UART_HandleTypeDef handle,uint8_t *buffer,GPGLL *data);
+void pull_GSP_GPGSA_data(UART_HandleTypeDef handle,uint8_t *buffer,GPGSA *data);
+void pull_GSP_GPGSV_data(UART_HandleTypeDef handle,uint8_t *buffer,GPGSV *data);
+void pull_GSP_GPVTG_data(UART_HandleTypeDef handle,uint8_t *buffer,GPVTG *data);
+void pull_GSP_GPRMC_data(UART_HandleTypeDef handle,uint8_t *buffer,GPRMC *data);
+
 
 #endif /* INC_HAL_GY_NE06MV2_GPS_DRIVER_H_ */
