@@ -1,0 +1,2 @@
+# HAL_GY_NEO6MV2_GPS_DRIVER
+HAL driver for NEO6 GPS devises
