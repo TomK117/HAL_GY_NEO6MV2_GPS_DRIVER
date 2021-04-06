@@ -9,13 +9,15 @@
 #define INC_HAL_GY_NE06MV2_GPS_DRIVER_H_
 
 #include "main.h"
+#include "strings.h"
 #include "string.h"
 
-#define TRAME_SIZE 82	//GSP is 82 caratere maximum
+#define TRAME_SIZE 504	//GSP is 82 caratere maximum
 
-extern uint8_t RX_Buffer[1500];
+extern uint8_t RX_Buffer[TRAME_SIZE];
 
 typedef struct {
+	uint8_t trame_GGA [84];
 	uint8_t time [6];
 	uint8_t latitude [15];
 	uint8_t longitude [15];
@@ -27,16 +29,20 @@ typedef struct {
 	uint8_t empty0;
 	uint8_t empty1;
 	uint8_t checksum;
-}GPGGA;
+}GPGGA_t;
 
 typedef struct {
+	uint8_t trame_GLL [84];
 	uint8_t latitude [15];
+	uint8_t lat_dir;
 	uint8_t longitude [15];
+	uint8_t long_dir;
 	uint8_t time [6];
 	uint8_t data_check;
-}GPGLL;
+}GPGLL_t;
 
 typedef struct {
+	uint8_t trame_GSA [84];
 	uint8_t mode;
 	uint8_t FIX_3D;
 	uint8_t ID_SAT [25];
@@ -44,9 +50,10 @@ typedef struct {
 	uint8_t HDOP [4];
 	uint8_t VDOP [4];
 	uint8_t checksum;
-}GPGSA;
+}GPGSA_t;
 
 typedef struct {
+	uint8_t trame_GSV [84];
 	uint8_t NB_GVS;
 	uint8_t T;
 	uint8_t SAT_INSIGHT [2];
@@ -55,32 +62,39 @@ typedef struct {
 	uint8_t AZIMUT [3];
 	uint8_t signal_power;
 	uint8_t checksum;
-}GPGSV;
+}GPGSV_t;
 
 typedef struct {
+	uint8_t trame_VTG [84];
 	uint8_t cap_R [7];
 	uint8_t cap_T [7];
 	uint8_t speed_N [7];
 	uint8_t speed_K [7];
-}GPVTG;
+}GPVTG_t;
 
 typedef struct {
+	uint8_t trame_RMC [84];
 	uint8_t time [6];
+	uint8_t warning;
 	uint8_t latitude [15];
+	uint8_t lat_dir;
 	uint8_t longitude [15];
+	uint8_t long_dir;
 	uint8_t speed_N [7];
 	uint8_t cap_T [7];
 	uint8_t day [6];
 	uint8_t cap_R [7];
-	uint8_t checksum;
-}GPRMC;
+	uint8_t cap_dir;
+	uint8_t checksum[2];
+}GPRMC_t;
 
-void pull_GSP_GPGGA_data(UART_HandleTypeDef handle,uint8_t *buffer,GPGGA *data);
-void pull_GSP_GPGLL_data(UART_HandleTypeDef handle,uint8_t *buffer,GPGLL *data);
-void pull_GSP_GPGSA_data(UART_HandleTypeDef handle,uint8_t *buffer,GPGSA *data);
-void pull_GSP_GPGSV_data(UART_HandleTypeDef handle,uint8_t *buffer,GPGSV *data);
-void pull_GSP_GPVTG_data(UART_HandleTypeDef handle,uint8_t *buffer,GPVTG *data);
-void pull_GSP_GPRMC_data(UART_HandleTypeDef handle,uint8_t *buffer,GPRMC *data);
+void pull_GSP_GPGGA_data(uint8_t *buffer,GPGGA_t *datastruct);
+void pull_GSP_GPGLL_data(uint8_t *buffer,GPGLL_t *datastruct);
+void pull_GSP_GPGSA_data(uint8_t *buffer,GPGSA_t *datastruct);
+void pull_GSP_GPGSV_data(uint8_t *buffer,GPGSV_t *datastruct);
+void pull_GSP_GPVTG_data(uint8_t *buffer,GPVTG_t *datastruct);
+void pull_GSP_GPRMC_data(uint8_t *buffer,GPRMC_t *datastruct);
 
+extern GPGLL_t GLL;
 
 #endif /* INC_HAL_GY_NE06MV2_GPS_DRIVER_H_ */
