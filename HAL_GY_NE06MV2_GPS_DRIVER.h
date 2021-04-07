@@ -96,5 +96,6 @@ void pull_GSP_GPVTG_data(uint8_t *buffer,GPVTG_t *datastruct);
 void pull_GSP_GPRMC_data(uint8_t *buffer,GPRMC_t *datastruct);
 
 extern GPGLL_t GLL;
+extern GPRMC_t RMC;
 
 #endif /* INC_HAL_GY_NE06MV2_GPS_DRIVER_H_ */
