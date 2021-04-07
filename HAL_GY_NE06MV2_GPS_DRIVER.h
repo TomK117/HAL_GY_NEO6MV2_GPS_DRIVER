@@ -12,9 +12,10 @@
 #include "strings.h"
 #include "string.h"
 
-#define TRAME_SIZE 504	//GSP is 82 caratere maximum
+#define PACKET_SIZE 503 //packet is 503 octets maximum
+#define TRAME_SIZE 83	//GSP is 83 octets maximum
 
-extern uint8_t RX_Buffer[TRAME_SIZE];
+extern uint8_t RX_Buffer[PACKET_SIZE];
 
 typedef struct {
 	uint8_t trame_GGA [84];
